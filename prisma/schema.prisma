@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model t_mat_asig {
+  id_mat_asig Int        @id @default(autoincrement())
+  intencidad  Decimal?   @db.Decimal
+  id_materia  Int?
+  id_docente  Int?
+  precio_hora Decimal?   @db.Decimal
+  semestre    String?    @db.VarChar(40)
+  t_usuario   t_usuario? @relation(fields: [id_docente], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_docente")
+  t_materia   t_materia? @relation(fields: [id_materia], references: [id_materia], onDelete: NoAction, onUpdate: NoAction, map: "fk_materia")
+}
+
+model t_materia {
+  id_materia   Int            @id @default(autoincrement())
+  asignatura   String?        @db.VarChar(40)
+  codigo       Int?
+  t_mat_asig   t_mat_asig[]
+  t_regis_asis t_regis_asis[]
+  t_usuario    t_usuario[]
+}
+
+model t_profesion {
+  id_profesion         Int         @id @default(autoincrement())
+  descripcionprofesion String?     @db.VarChar(80)
+  t_usuario            t_usuario[]
+}
+
+model t_regis_asis {
+  id_registro     Int        @id @default(autoincrement())
+  id_docente      Int?
+  id_materia      Int?
+  horas_dictadas  Decimal?   @db.Decimal
+  tema_dictado    String?    @db.VarChar(80)
+  num_estudiantes Decimal?   @db.Decimal
+  observacion     String?    @db.VarChar(70)
+  t_usuario       t_usuario? @relation(fields: [id_docente], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_asis_docente")
+  t_materia       t_materia? @relation(fields: [id_materia], references: [id_materia], onDelete: NoAction, onUpdate: NoAction, map: "fk_asis_materia")
+}
+
+model t_roles {
+  id_rol    Int         @id @default(autoincrement())
+  rol       String?     @db.VarChar(80)
+  t_usuario t_usuario[]
+}
+
+model t_sexopersona {
+  id_sexo         Int         @id(map: "sexopersona_pkey") @default(autoincrement())
+  descripcionsexo String?     @db.VarChar(80)
+  t_usuario       t_usuario[]
+}
+
+model t_usuario {
+  id_usuario    Int            @id @default(autoincrement())
+  nombre        String?        @db.VarChar(80)
+  apellido      String?        @db.VarChar(80)
+  correo        String?        @db.VarChar(80)
+  password      String?        @db.VarChar(100)
+  id_rol        Int?
+  cedula        Decimal?       @db.Decimal
+  telefono      Decimal?       @db.Decimal
+  direccion     String?        @db.VarChar(100)
+  ciudad        String?        @db.VarChar(100)
+  id_sexo       Int?
+  id_materia    Int?
+  id_profesion  Int?
+  t_materia     t_materia?     @relation(fields: [id_materia], references: [id_materia], onDelete: NoAction, onUpdate: NoAction, map: "fk_asignatura")
+  t_profesion   t_profesion?   @relation(fields: [id_profesion], references: [id_profesion], onDelete: NoAction, onUpdate: NoAction, map: "fk_profesion")
+  t_roles       t_roles?       @relation(fields: [id_rol], references: [id_rol], onDelete: NoAction, onUpdate: NoAction, map: "fk_rol")
+  t_sexopersona t_sexopersona? @relation(fields: [id_sexo], references: [id_sexo], onDelete: NoAction, onUpdate: NoAction, map: "fk_sexo")
+  t_mat_asig    t_mat_asig[]
+  t_regis_asis  t_regis_asis[]
+}
