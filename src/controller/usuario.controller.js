@@ -7,7 +7,7 @@ const crearUsuario = async(req)=>{
 
     try {
     
-        const { nombres, apellidos, cedula, telefono , password, email , cod_rol, direccion, ciudad , id_sexo, id_materia, id_profesion } = req.body
+        const { nombres, apellidos, cedula, telefono , password, correo , cod_rol, direccion, ciudad , id_sexo, id_materia, id_profesion } = req.body
 
         const usuario = await prisma.t_usuario.create({
             data:{
@@ -16,7 +16,7 @@ const crearUsuario = async(req)=>{
                 cedula: cedula,
                 telefono: telefono,
                 password: password,
-                correo: email,
+                correo: correo,
                 id_rol : cod_rol,
                 direccion: direccion,
                 ciudad: ciudad,

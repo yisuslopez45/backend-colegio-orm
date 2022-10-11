@@ -36,11 +36,11 @@ router.post('/crearRegistro', async(req,res)=>{
 })
 
 
-router.post('/RegistroAsistencia', async(req,res)=>{
+router.get('/RegistroAsistencia/:idUsuario', async(req,res)=>{
 
     try {
         
-        const respuesta =await asistencia.informeAsistencia(req.body.id);
+        const respuesta =await asistencia.informeAsistencia(req.params.idUsuario);
 
         if( JSON.stringify(respuesta)==="[]"){
             return res.status(400).json({
@@ -50,7 +50,7 @@ router.post('/RegistroAsistencia', async(req,res)=>{
         }
 
         res.status(200).json({
-            respuesta
+            data : respuesta
         })
 
 

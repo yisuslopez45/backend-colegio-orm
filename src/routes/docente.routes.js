@@ -7,32 +7,41 @@ const docente = require('../controller/docente.controller');
 router.get('/consultarDocentes', async(req,res)=>{
 
     try {
-        
+
     const respuesta = await docente.consultarDocentes();
-
-
-    console.log(respuesta)
-
     res.status(200).json({
-         respuesta
+         data: respuesta
     })
 
+    } catch (error) {
+        console.log(error)
+    }
+
+
+})
+
+router.get('/consultarDocentesMateria/:idmateria', async(req,res)=>{
+
+    try {
+
+    const respuesta = await docente.consultarDocenteMateria(req.params.idmateria)
+    res.status(200).json({
+         data : respuesta
+    })
 
     } catch (error) {
-                console.log(error)
-
+        console.log(error)
     }
 
 
 })
 
 
-
-router.post('/consultarDocenteCedula', async(req,res)=>{
+router.get('/consultarDocenteCedula/:idCedula', async(req,res)=>{
 
     try {
 
-    const respuesta = await docente.consultarDocenteCedula(req.body.cedula);
+    const respuesta = await docente.consultarDocenteCedula(req.params.idCedula);
     
     console.log(respuesta)
 
@@ -44,7 +53,7 @@ router.post('/consultarDocenteCedula', async(req,res)=>{
         })
     }
     res.status(200).json({
-         respuesta
+         data:respuesta
     })
 
     } catch (error) {

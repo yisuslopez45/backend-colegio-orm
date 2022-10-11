@@ -21,6 +21,37 @@ const consultarDocentes = async()=>{
 }
 
 
+const consultarDocenteMateria = async(id)=>{
+    try {
+
+ 
+        const respuesta = await prisma.t_usuario.findMany({
+            where:{
+                id_materia : parseInt(id)
+            }
+        })
+        
+
+        let data = []
+
+        for(let i=0; i<respuesta.length ; i++){
+            info = {
+                "id_usuario": respuesta[i].id_usuario,
+                "nombre": respuesta[i].nombre,
+                "apellido": respuesta[i].apellido,
+                "cedula": respuesta[i].cedula,
+            }
+
+            data.push(info)
+        }
+
+        return data
+       
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 const consultarDocenteCedula = async(cedula)=>{
 
     try {
@@ -28,7 +59,7 @@ const consultarDocenteCedula = async(cedula)=>{
         const respuesta = await prisma.t_usuario.findMany({
 
             where:{
-                cedula: cedula
+                cedula: parseInt(cedula)
             },
 
             include:{
@@ -50,7 +81,7 @@ const consultarDocenteCedula = async(cedula)=>{
             "cedula": respuesta[0].cedula,
             "telefono": respuesta[0].telefono
         }
-        console.log(respuesta)
+     
         return usuario
         
     } catch (error) {
@@ -58,5 +89,5 @@ const consultarDocenteCedula = async(cedula)=>{
     }
 }
 
-module.exports = {consultarDocentes, consultarDocenteCedula};
+module.exports = {consultarDocentes, consultarDocenteCedula, consultarDocenteMateria};
 

@@ -43,7 +43,7 @@ const informeAsistencia = async(id)=>{
             _sum: {horas_dictadas: true},
 
             where:{
-                id_docente: id
+                id_docente: parseInt(id)
             },
 
         })
@@ -52,7 +52,7 @@ const informeAsistencia = async(id)=>{
         const consultaMateriasAsignadas = await prisma.t_mat_asig.findMany({
          
             where:{
-                id_docente: id
+                id_docente: parseInt(id)
             },
 
             include: {
@@ -73,7 +73,8 @@ const informeAsistencia = async(id)=>{
             "intencidad" : consultaMateriasAsignadas[i].intencidad,
             "precio_hora" : consultaMateriasAsignadas[i].precio_hora,
             "id_docente" : consultaMateriasAsignadas[i].id_docente,
-            "dictadas" :  consultaAsistencia[i]._sum.horas_dictadas
+            "dictadas" :  consultaAsistencia[i]._sum.horas_dictadas,
+            "TotalPago" : parseInt( consultaAsistencia[i]._sum.horas_dictadas) * parseInt(consultaMateriasAsignadas[i].precio_hora)
             }
                
         }
