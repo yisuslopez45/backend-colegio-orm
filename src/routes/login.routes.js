@@ -25,7 +25,8 @@ router.post('/login', async(req,res)=>{
         msg: "Se inicio sesión Correctamente",
         code: 0,
         nombreUsuario : respuesta[0].nombre +" "+ respuesta[0].apellido,
-        idRol : respuesta[0].id_rol
+        idRol : respuesta[0].id_rol,
+        id_usuario : respuesta[0].id_usuario
     })
         
 })

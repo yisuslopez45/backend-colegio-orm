@@ -26,7 +26,7 @@ const consultarMateriasbyDocente = async(id)=>{
             
             distinct: ["id_materia"],
             where:{
-                id_docente: id
+                id_docente: parseInt(id)
             },
             include: {t_materia: true}        
             

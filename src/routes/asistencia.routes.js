@@ -63,13 +63,13 @@ router.get('/RegistroAsistencia/:idUsuario', async(req,res)=>{
 
 
 
-router.post('/verRegistros', async(req,res)=>{
+router.get('/verRegistros/:idusuario', async(req,res)=>{
 
     try {
 
         console.log(req.body.id)
         
-        const respuesta = await asistencia.verAsistencia(req.body.id);
+        const respuesta = await asistencia.verAsistencia(req.params.idusuario);
 
         if(JSON.stringify(respuesta)==="[]"){
             return res.status(400).json({
@@ -79,7 +79,7 @@ router.post('/verRegistros', async(req,res)=>{
         }
 
         res.status(200).json({
-            respuesta
+            data : respuesta
         })
 
     } catch (error) {

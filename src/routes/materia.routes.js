@@ -26,12 +26,11 @@ router.get('/consultarMaterias', async(req,res)=>{
 
 
 
-router.post('/consultarMateriaBydocente',async(req,res)=>{
+router.get('/consultarMaterias/:id_usuario',async(req,res)=>{
 
     try {
         
-        const respuesta  = await materia.consultarMateriasbyDocente(req.body.id)
-
+        const respuesta  = await materia.consultarMateriasbyDocente(req.params.id_usuario)
 
         if(JSON.stringify(respuesta)==="[]"){
             return res.status(400).json({
@@ -41,11 +40,9 @@ router.post('/consultarMateriaBydocente',async(req,res)=>{
         }
 
         res.status(200).json({
-            respuesta
+            data : respuesta
        })
    
-
-
     } catch (error) {
         
     }

@@ -94,7 +94,7 @@ const verAsistencia  = async(id)=>{
         
         const entradasAsistencia = await prisma.t_regis_asis.findMany({
             where:{
-                id_docente: id
+                id_docente: parseInt(id)
             },
 
         include:{
