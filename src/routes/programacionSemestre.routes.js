@@ -2,11 +2,12 @@
 const { Router } = require('express');
 const express = require('express');
 const router = express.Router();
-const programar = require('../controller/programacionSemestre.controller')
+const programar = require('../controller/programacionSemestre.controller');
+const { tokenAdmin } = require('../utils/rolAdmin');
 
 
 
-router.post('/crearProSemestre', async(req,res)=>{
+router.post('/crearProSemestre', [tokenAdmin] ,async(req,res)=>{
 
     try {
         

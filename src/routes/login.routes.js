@@ -5,6 +5,8 @@ const router = express.Router();
 const path = require('path');
 const Swal = require('sweetalert2');
 const { stringify } = require('querystring');
+const { generarJwt } = require('../utils/jwtAuth');
+const { tokenAdmin } = require('../utils/rolAdmin');
 
 router.post('/login', async(req,res)=>{
 
@@ -12,27 +14,33 @@ router.post('/login', async(req,res)=>{
 
     const respuesta = await login.logeo(correo, password)
 
-    if(JSON.stringify(respuesta)==="[]"){
+    if(respuesta === "Correo Incorrecto" || respuesta === "Contraseña Incorrecta"){
         return res.status(400).json({
-            message: 'correo incorrecto',
+            message: respuesta,
             code: -1
         });
     }
-
-    console.log(respuesta)
+    
+    const payload = {
+        nombreUsuario : respuesta[0].nombre +" "+ respuesta[0].apellido,
+        idRol :  respuesta[0].id_rol,
+        id_usuario : respuesta[0].id_usuario
+    }
+    const tokenGenerado = generarJwt(payload)
 
     res.status(200).json({
         msg: "Se inicio sesión Correctamente",
         code: 0,
-        nombreUsuario : respuesta[0].nombre +" "+ respuesta[0].apellido,
+        tokenGenerado,
+        nombreUsuario: respuesta[0].nombre +" "+ respuesta[0].apellido,
+        id_usuario  : respuesta[0].id_usuario,
         idRol : respuesta[0].id_rol,
-        id_usuario : respuesta[0].id_usuario
     })
         
 })
 
 
-router.post('/registrarUsuario', async(req,res)=>{
+router.post('/registrarUsuario',  [tokenAdmin] , async(req,res)=>{
 
     try {
         
@@ -66,10 +74,7 @@ router.post('/registrarUsuario', async(req,res)=>{
             });
         }
 
-
         const respuesta =  await login.registrar(req);
-
-
 
         if(respuesta){
 

@@ -3,6 +3,7 @@ const { Router } = require('express');
 const express = require('express');
 const router = express.Router();
 const Usuario = require('../controller/usuario.controller');
+const { tokenAdmin } = require('../utils/rolAdmin');
 
 
 
@@ -10,24 +11,24 @@ const Usuario = require('../controller/usuario.controller');
 
 
 
-router.post("/crearUsuario", async(req, res)=>{
+router.post("/crearUsuario", [tokenAdmin] ,async(req, res)=>{
 
 
     try {
         
         const {  password,password2 } = req.body
-    
         const respuesta = await Usuario.crearUsuario(req);
+    
         
         console.log( typeof(respuesta))
-
+        
         if(password != password2){
             return res.status(400).json({
                 code: -2,
                 msg: "Contraseña no son iguales"
             })
         }
-
+        
         if(typeof(respuesta) == "undefined" ){
             return res.status(400).json({
                 code: -1,

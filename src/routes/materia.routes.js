@@ -3,30 +3,28 @@ const { Router } = require('express');
 const express = require('express');
 const router = express.Router();
 const materia = require('../controller/materia.controller');
+const { tokenAdmin } = require('../utils/rolAdmin');
+const { tokenDocente } = require('../utils/rolDocente');
 
-router.get('/consultarMaterias', async(req,res)=>{
+router.get('/consultarMaterias', [tokenAdmin] ,async(req,res)=>{
 
     try {
         
     const respuesta = await materia.consultarMaterias();
-
-
     res.status(200).json({
          data : respuesta
     })
 
-
     } catch (error) {
-                console.log(error)
+        console.log(error)
 
     }
-
 
 })
 
 
 
-router.get('/consultarMaterias/:id_usuario',async(req,res)=>{
+router.get('/consultarMaterias/:id_usuario', [tokenDocente]  ,async(req,res)=>{
 
     try {
         

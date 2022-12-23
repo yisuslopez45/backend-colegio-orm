@@ -155,7 +155,7 @@ const actualizarRegistro = async(req)=>{
     })
 
     return respuesta.count
-    console.log(respuesta)
+  
 
     } catch (error) {
        console.log(error) 

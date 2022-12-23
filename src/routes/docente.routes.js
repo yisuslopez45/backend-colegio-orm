@@ -3,8 +3,9 @@ const { Router } = require('express');
 const express = require('express');
 const router = express.Router();
 const docente = require('../controller/docente.controller');
+const { tokenAdmin } = require('../utils/rolAdmin');
 
-router.get('/consultarDocentes', async(req,res)=>{
+router.get('/consultarDocentes', [tokenAdmin] ,async(req,res)=>{
 
     try {
 
@@ -20,7 +21,7 @@ router.get('/consultarDocentes', async(req,res)=>{
 
 })
 
-router.get('/consultarDocentesMateria/:idmateria', async(req,res)=>{
+router.get('/consultarDocentesMateria/:idmateria', [tokenAdmin] ,async(req,res)=>{
 
     try {
 
@@ -37,14 +38,12 @@ router.get('/consultarDocentesMateria/:idmateria', async(req,res)=>{
 })
 
 
-router.get('/consultarDocenteCedula/:idCedula', async(req,res)=>{
+router.get('/consultarDocenteCedula/:idCedula',  [tokenAdmin] ,async(req,res)=>{
 
     try {
 
     const respuesta = await docente.consultarDocenteCedula(req.params.idCedula);
     
-    console.log(respuesta)
-
     if(typeof(respuesta)=="undefined"){
 
         return res.status(400).json({
